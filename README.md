@@ -6,7 +6,8 @@ Repository with an adapted version of the [ParticleNet](https://github.com/hqucm
 - [The Mu2e experiment and its calorimeter](#mu2e-calo) 
 - [Other: XGBoost implementation on a reduced dataset](#XGBoost)
 
-## The Mu2e experiment and its calorimeter
+<a name="mu2e-calo"></a>
+## The Mu2e experiment and its calorimeter 
 
 ## Radiative Muon Capture
 
@@ -18,4 +19,5 @@ Repository with an adapted version of the [ParticleNet](https://github.com/hqucm
 
 ### Customization 
 
+<a name="XGBoost"></a>
 ## Other: XGBoost implementation on a reduced dataset
