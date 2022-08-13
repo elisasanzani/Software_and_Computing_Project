@@ -168,7 +168,7 @@ def get_particle_net(num_classes, input_shapes):
 
 #----------------------------- Custom model -----------------------------
 
-def get_particle_net_lite_custom(num_classes, input_shapes):
+def get_particle_net_lite_custom(input_shapes):
     
     '''
     ParticleNet-Lite model from `"ParticleNet: Jet Tagging via Particle Clouds"
@@ -182,7 +182,6 @@ def get_particle_net_lite_custom(num_classes, input_shapes):
     '''
 
     setting = _DotDict()
-    setting.num_class = num_classes
 
     # conv_params: list of tuple in the format (K, (C1, C2, C3))
     setting.conv_params = [
