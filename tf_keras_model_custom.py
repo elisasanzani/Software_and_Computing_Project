@@ -103,13 +103,23 @@ def _particle_net_base(points, features=None, mask=None, setting=None, name='par
         pool = tf.reduce_mean(fts, axis=1)  # (N, C)
 
         if setting.fc_params is not None:
-            x = pool
+            
+            #------------custom change------------
+            #x = pool #original
+            x = tf.concat((pool, summary), -1) #concat to include summary vector
+            #------------------------------------
+            
             for layer_idx, layer_param in enumerate(setting.fc_params):
                 units, drop_rate = layer_param
                 x = keras.layers.Dense(units, activation='relu')(x)
                 if drop_rate is not None and drop_rate > 0:
                     x = keras.layers.Dropout(drop_rate)(x)
-            out = keras.layers.Dense(setting.num_class, activation='softmax')(x)
+
+            #------------custom change------------
+            #out = keras.layers.Dense(setting.num_class, activation='softmax')(x) #original
+            out = keras.layers.Dense(1, activation='sigmoid')(x) #activation function changed to sigmoid
+            #------------------------------------
+
             return out  # (N, num_classes)
         else:
             return pool
@@ -118,7 +128,9 @@ def _particle_net_base(points, features=None, mask=None, setting=None, name='par
 class _DotDict:
     pass
 
-
+#------------ This part will not be used for this application ------------
+# since we'll use a custom version of Particle Net Lite (line 168)
+'''
 def get_particle_net(num_classes, input_shapes):
     r"""ParticleNet model from `"ParticleNet: Jet Tagging via Particle Clouds"
     <https://arxiv.org/abs/1902.08570>`_ paper.
@@ -149,10 +161,17 @@ def get_particle_net(num_classes, input_shapes):
     outputs = _particle_net_base(points, features, mask, setting, name='ParticleNet')
 
     return keras.Model(inputs=[points, features, mask], outputs=outputs, name='ParticleNet')
+'''
+#------------------------------------------------------------------------
 
 
-def get_particle_net_lite(num_classes, input_shapes):
-    r"""ParticleNet-Lite model from `"ParticleNet: Jet Tagging via Particle Clouds"
+
+#----------------------------- Custom model -----------------------------
+
+def get_particle_net_lite_custom(num_classes, input_shapes):
+    
+    '''
+    ParticleNet-Lite model from `"ParticleNet: Jet Tagging via Particle Clouds"
     <https://arxiv.org/abs/1902.08570>`_ paper.
     Parameters
     ----------
@@ -160,23 +179,44 @@ def get_particle_net_lite(num_classes, input_shapes):
         Number of output classes.
     input_shapes : dict
         The shapes of each input (`points`, `features`, `mask`).
-    """
+    '''
+
     setting = _DotDict()
     setting.num_class = num_classes
+
     # conv_params: list of tuple in the format (K, (C1, C2, C3))
     setting.conv_params = [
-        (7, (32, 32, 32)),
-        (7, (64, 64, 64)),
+        #(7, (32, 32, 32)), #original
+        #(7, (64, 64, 64)), #original
+        (3, (16, 16, 16)), #custom
+        (3, (32, 32, 32)), #custom
         ]
+
     # conv_pooling: 'average' or 'max'
     setting.conv_pooling = 'average'
+
     # fc_params: list of tuples in the format (C, drop_rate)
-    setting.fc_params = [(128, 0.1)]
+    #setting.fc_params = [(128, 0.1)] #original
+    setting.fc_params = [(64, 0.2)] #custom
+
     setting.num_points = input_shapes['points'][0]
 
     points = keras.Input(name='points', shape=input_shapes['points'])
-    features = keras.Input(name='features', shape=input_shapes['features']) if 'features' in input_shapes else None
-    mask = keras.Input(name='mask', shape=input_shapes['mask']) if 'mask' in input_shapes else None
-    outputs = _particle_net_base(points, features, mask, setting, name='ParticleNet')
+    features = keras.Input(name='features', shape=input_shapes['features']) 
+    mask = keras.Input(name='mask', shape=input_shapes['mask'])         
+    summary =  keras.Input(name='summary', shape=(4))       #this was not present 
 
-    return keras.Model(inputs=[points, features, mask], outputs=outputs, name='ParticleNet')
+    outputs = _particle_net_base(
+        points, 
+        features, 
+        mask, 
+        summary,    #this was not present
+        setting, 
+        name='ParticleNet'
+    )
+
+    return keras.Model(
+        inputs=[points, features, mask, summary],   #added summary 
+        outputs=outputs, 
+        name='ParticleNet'
+    )
