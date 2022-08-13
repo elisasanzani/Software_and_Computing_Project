@@ -25,7 +25,9 @@ def knn(num_points, k, topk_indices, features):
 
 
 def edge_conv(points, features, num_points, K, channels, with_bn=True, activation='relu', pooling='average', name='edgeconv'):
-    """EdgeConv
+    
+    '''
+    EdgeConv
     Args:
         K: int, number of neighbors
         in_channels: # of input channels
@@ -36,7 +38,7 @@ def edge_conv(points, features, num_points, K, channels, with_bn=True, activatio
         features: (N, P, C_0)
     Returns:
         transformed points: (N, P, C_out), C_out = channels[-1]
-    """
+    '''
 
     with tf.name_scope('edgeconv'):
 
@@ -59,7 +61,7 @@ def edge_conv(points, features, num_points, K, channels, with_bn=True, activatio
             if activation:
                 x = keras.layers.Activation(activation, name='%s_act%d' % (name, idx))(x)
 
-        if pooling == 'max':
+        if pooling == 'average':
             fts = tf.reduce_max(x, axis=2)  # (N, P, C')
         else:
             fts = tf.reduce_mean(x, axis=2)  # (N, P, C')
@@ -77,10 +79,14 @@ def edge_conv(points, features, num_points, K, channels, with_bn=True, activatio
             return sc + fts
 
 
-def _particle_net_base(points, features=None, mask=None, setting=None, name='particle_net'):
+def _particle_net_base(points, features=None, mask=None, summary=None, setting=None, name='particle_net'):
+
+    #Added summary vector as input argument
+
     # points : (N, P, C_coord)
     # features:  (N, P, C_features), optional
-    # mask: (N, P, 1), optinal
+    # mask: (N, P, 1), optional
+    # N is the batch_size # no need to specificy it in input_shapes
 
     with tf.name_scope(name):
         if features is None:
@@ -120,7 +126,7 @@ def _particle_net_base(points, features=None, mask=None, setting=None, name='par
             out = keras.layers.Dense(1, activation='sigmoid')(x) #activation function changed to sigmoid
             #------------------------------------
 
-            return out  # (N, num_classes)
+            return out  # (N, 1)
         else:
             return pool
 
@@ -129,7 +135,7 @@ class _DotDict:
     pass
 
 #------------ This part will not be used for this application ------------
-# since we'll use a custom version of Particle Net Lite (line 168)
+# since we'll use a custom version of Particle Net Lite (line 177)
 '''
 def get_particle_net(num_classes, input_shapes):
     r"""ParticleNet model from `"ParticleNet: Jet Tagging via Particle Clouds"
@@ -183,12 +189,14 @@ def get_particle_net_lite_custom(input_shapes):
 
     setting = _DotDict()
 
+    setting.num_points = input_shapes['points'][0]
+
     # conv_params: list of tuple in the format (K, (C1, C2, C3))
     setting.conv_params = [
         #(7, (32, 32, 32)), #original
         #(7, (64, 64, 64)), #original
-        (3, (16, 16, 16)), #custom
-        (3, (32, 32, 32)), #custom
+        (3, (16, 16, 16)),  #custom
+        (3, (32, 32, 32)),  #custom
         ]
 
     # conv_pooling: 'average' or 'max'
@@ -196,9 +204,7 @@ def get_particle_net_lite_custom(input_shapes):
 
     # fc_params: list of tuples in the format (C, drop_rate)
     #setting.fc_params = [(128, 0.1)] #original
-    setting.fc_params = [(64, 0.2)] #custom
-
-    setting.num_points = input_shapes['points'][0]
+    setting.fc_params = [(64, 0.2)]   #custom
 
     points = keras.Input(name='points', shape=input_shapes['points'])
     features = keras.Input(name='features', shape=input_shapes['features']) 
