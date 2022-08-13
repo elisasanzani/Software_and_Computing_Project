@@ -7,10 +7,12 @@ Repository with an adapted version of the [ParticleNet](https://github.com/hqucm
 - [The Mu2e experiment and its calorimeter](#mu2e-calo) 
 - [Radiative Muon Capture](#rmc)
     - [Cut based analysis for RMC](#rmc-cuts)
-- [Dataset used](#data)
-- []
 
-- [The Mu2e experiment and its calorimeter](#mu2e-calo) 
+- [Particle Net Lite customization](#pnet-custom)
+    - [Particle Net](#pnet)
+    - [Dataset used](#data)
+    - [Training and hyper-parameters](#hyper-par)
+- [Model final performance](#performance)
 - [Other: XGBoost implementation on a reduced dataset](#XGBoost)
 
 <a name="mu2e-calo"></a>
@@ -22,23 +24,20 @@ Repository with an adapted version of the [ParticleNet](https://github.com/hqucm
 <a name="rmc-cuts"></a>
 ### Cut based analysis for RMC
 
+<a name="pnet-custom"></a>
+##Particle Net Lite customization
+
+<a name="pnet"></a>
+###Particle Net
+
 <a name="data"></a>
-## Dataset used
+### Dataset used
 
-<a name="mu2e-calo"></a>
-## Particle Net
+<a name="hyper-par"></a>
+###Training and hyper-parameters
 
-<a name="mu2e-calo"></a>
-
-## Radiative Muon Capture
-
-### Cut based analysis for RMC
-
-## Dataset used
-
-## Particle Net
-
-### Customization 
+<a name="performance"></a>
+##Model final performance
 
 <a name="XGBoost"></a>
 ## Other: XGBoost implementation on a reduced dataset
