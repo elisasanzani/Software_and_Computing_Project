@@ -25,19 +25,19 @@ Repository with an adapted version of the [ParticleNet](https://github.com/hqucm
 ### Cut based analysis for RMC
 
 <a name="pnet-custom"></a>
-##Particle Net Lite customization
+## Particle Net Lite customization
 
 <a name="pnet"></a>
-###Particle Net
+### Particle Net
 
 <a name="data"></a>
 ### Dataset used
 
 <a name="hyper-par"></a>
-###Training and hyper-parameters
+### Training and hyper-parameters
 
 <a name="performance"></a>
-##Model final performance
+## Model final performance
 
 <a name="XGBoost"></a>
 ## Other: XGBoost implementation on a reduced dataset
