@@ -2,15 +2,25 @@
 
 Repository with an adapted version of the ParticleNet DG-CNN used to identify signal photons from Radiative Muon Capture (RMC) events in the Mu2e crystal calorimeter.
 
-## Table of contents
-
+## Contents
+- [Installation](#installation)
 - [The Mu2e experiment and its calorimeter](#mu2e-calo) 
 - [Radiative Muon Capture](#rmc)
     - [Dataset used](#data)
 - [Particle Net and customization](#pnet-custom)
     - [Custom Particle Net](#pnet)
-- [Model final performance](#performance)
+- [Model performance](#performance)
 - [Other: XGBoost implementation on a reduced dataset](#XGBoost)
+
+<a name="installation"></a>
+## Installation
+
+```
+    $ git clone https://github.com/elisasanzani/Software_and_Computing_Project.git
+    $ cd Software_and_Computing_Project/
+    $ sudo pip3 install -r requirements.txt
+```
+Note: while the code can be run locally, given GPU availability and requirements, I suggest using [Google Colaboratory](https://colab.research.google.com/) to have a fast performance ensured. Open the .ipynb file and select Runtime -> Change runtime -> Set harware acceleration to GPU. Data and the model are downloaded, but in a local run can be called locally since they are available in this repo.
 
 <a name="mu2e-calo"></a>
 ## The Mu2e experiment and its calorimeter 
@@ -34,9 +44,11 @@ Radiative Muon Capture (RMC) occurs when a muon is absorbed in the target and a 
 Near the endpoint, RMC photons represent a background to other Mu2e CLFV searches like &mu;<sup>-</sup> &rarr; e<sup>+</sup>.
 The RMC spectrum has been measured by the TRUMPH collaboration, but high energy tails have low statistics and an independent measurement is required near the endpoint.
 <figure>
-    <img src="./images/rmc-triumph.png">
-    <figcaption align="center">Fig. 2 The TRIUMPH RMC photon spectrum.  </figcaption>
+    <img src="./images/rmc-truimph.png">
+    <figcaption align="center">Fig. 2 The TRIUMPH RMC photon spectrum for the Mu2e target material (<sup>27</sup>Al).  </figcaption>
 </figure>
+
+<br>
 Backgrounds are due to: <br>
 - Beam, called minimun bias (MNBS) <br>
 - Cosmic rays <br>
@@ -50,7 +62,7 @@ There are three types of samples:
 <ul>
 <li>Signal: photons from RMC</li>
 <li>Background: min-bias events due to the beam</li>
-<li>Background: cosmic rays<\li>
+<li>Background: cosmic rays </li>
 </ul>
 
 Each sample represents one cluster in the calorimeter and has information about the cluster and at hit-level: <br>
@@ -65,13 +77,13 @@ Each sample represents one cluster in the calorimeter and has information about 
 ## Particle Net and customization
 ParticleNet is a CNN-like deep neural network for jet tagging with particle cloud data [[paper]](https://arxiv.org/pdf/1902.08570.pdf) [[GitHub repo]](https://github.com/hqucms/ParticleNet).
 Jets are represented as an unordered, permutation invariant set of particles. Such representation of a jet as a particle cloud is analogous to the point cloud representation of 3D shapes used in computer vision.
-This is a convolutional network with [EdgeConv](https://arxiv.org/pdf/1801.07829.pdf) blocks: graph edges are considered between each point i to its k nearest neighbours. For each point i, in this case, the EdgeConv block output has the form:<br>
+This is a convolutional network with [EdgeConv](https://arxiv.org/pdf/1801.07829.pdf) blocks: graph edges are considered between each point i to its k nearest neighbours. For each point i, in this case, the EdgeConv block output has the form:
 x<sub>i</sub>' = (1/k)&sum;<sup>k</sup><sub>j=1</sub> h<sub>&Theta;</sub>(x<sub>i</sub>, x<sub>i<sub>j</sub></sub> ) <br>
 where h<sub>&Theta;</sub> is a parametric edge function (like RELU) and x<sub>i</sub> are the features. Like for a CNN, multiple EdgeConv filters are stacked in the same layer.
 
 <a name="pnet"></a>
 ### Custom Particle Net
-The custom model [[code]](https://github.com/elisasanzani/Software_and_Computing_Project/blob/main/tf_keras_model.py) is based on Particle Net Lite model [[code]](https://github.com/hqucms/ParticleNet/blob/master/tf-keras/tf_keras_model.py), which has two EdgeConv blocks. In order to help the training, a "summary" vector (E,T,R,N) has been added and it is sent directly to the first dense layer. The last layer has been changed from softmax to sigmoid, because there are only 2 classes.
+The custom model [[code]](https://github.com/elisasanzani/Software_and_Computing_Project/blob/main/tf_keras_model.py) is based on Particle Net Lite model, which has two EdgeConv blocks. In order to help the training, a "summary" vector (E,T,R,N) has been added and it is sent directly to the first dense layer. The last layer has been changed from softmax to sigmoid, because there are only 2 classes.
 Given the very small cluster size, the number of nearest neighbours has been reduced from 7 to 3. The number of channels for each EdgeConv block has been reduced, as well as the number of neurons on the first layer. The dropout rate in the first dense layer has been increased.
 All losses and metrics are weighted to match the real statistics.<br>
 Model compilation parameters: <br>
@@ -89,7 +101,7 @@ $ ipython3 PNet_RMC_main.ipynb
 
 
 <a name="performance"></a>
-## Model final performance
+## Model performance
 
 <a name="XGBoost"></a>
 ## Other: XGBoost implementation 
