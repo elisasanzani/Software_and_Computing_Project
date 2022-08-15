@@ -193,10 +193,8 @@ def get_particle_net_lite_custom(input_shapes):
 
     # conv_params: list of tuple in the format (K, (C1, C2, C3))
     setting.conv_params = [
-        #(7, (32, 32, 32)), #original
-        #(7, (64, 64, 64)), #original
-        (3, (16, 16, 16)),  #custom
-        (3, (32, 32, 32)),  #custom
+        (3, (16, 16, 16)),  #custom     #original (7, (32, 32, 32)), 
+        (3, (32, 32, 32)),  #custom     #original (7, (64, 64, 64)),
         ]
 
     # conv_pooling: 'average' or 'max'
