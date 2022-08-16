@@ -20,7 +20,7 @@ Repository with an adapted version of the ParticleNet DG-CNN used to identify si
     $ cd Software_and_Computing_Project/
     $ sudo pip3 install -r requirements.txt
 ```
-Note: while the code can be run locally, given GPU availability and requirements, I suggest using [Google Colaboratory](https://colab.research.google.com/) to have a fast performance ensured. Open the .ipynb file and select Runtime -> Change runtime -> Set harware acceleration to GPU. Data and the model are downloaded, but in a local run can be called locally since they are available in this repo.
+Note: while the code can be run locally, given GPU availability and requirements, I suggest using [Google Colaboratory](https://colab.research.google.com/) to have a fast performance ensured. Open the .ipynb file and select Runtime -> Change runtime -> Set harware acceleration to GPU. Data and the model are downloaded, but in a local run can be fetched locally since they are available in this repo.
 
 <a name="mu2e-calo"></a>
 ## The Mu2e experiment and its calorimeter 
@@ -40,12 +40,14 @@ A high intensity pulsed muon beam at 10 GHz is stopped on the Al target. The con
 
 <a name="rmc"></a>
 ## Radiative Muon Capture
-Radiative Muon Capture (RMC) occurs when a muon is absorbed in the target and a photon is emitted: &mu;<sup>-</sup> +Al(27,13) &rarr; &gamma; + &nu;<sub>&mu;</sub> + Mg(27,12)<br>
+Radiative Muon Capture (RMC) occurs when a muon is absorbed in the target and a photon is emitted: &mu;<sup>-</sup> +Al(27,13) &rarr; &gamma; + &nu;<sub>&mu;</sub> + Mg(27,12).<br>
 Near the endpoint, RMC photons represent a background to other Mu2e CLFV searches like &mu;<sup>-</sup> &rarr; e<sup>+</sup>.
 The RMC spectrum has been measured by the TRUMPH collaboration, but high energy tails have low statistics and an independent measurement is required near the endpoint.
 <figure>
+    <p align="center">
     <img src="./images/rmc-truimph.png" width="350">
-    <figcaption align="center">Fig. 2 The TRIUMPH RMC photon spectrum for the Mu2e target material (<sup>27</sup>Al).  </figcaption>
+    <figcaption>Fig. 2 The TRIUMPH RMC photon spectrum for the Mu2e target material (<sup>27</sup>Al).  </figcaption>
+    </p>
 </figure>
 
 <br>
@@ -66,8 +68,10 @@ There are three types of samples:
 </ul>
 
 <figure>
-    <img src="./images/data-visualiz.png" width="550">
+    <p align="center">
+    <img src="./images/data-visualiz.png" width="600">
     <figcaption align="center">Fig. 3 Example of 1 cluster for each of the three samples.  </figcaption>
+    </p>
 </figure>
 
 Each sample represents one cluster in the calorimeter and has information about the cluster and at hit-level: <br>
