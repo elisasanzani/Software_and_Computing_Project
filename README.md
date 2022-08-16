@@ -10,7 +10,7 @@ Repository with an adapted version of the ParticleNet DG-CNN used to identify si
 - [Particle Net and customization](#pnet-custom)
     - [Custom Particle Net](#pnet)
 - [Model performance](#performance)
-- [Other: XGBoost implementation on a reduced dataset](#XGBoost)
+- [Other: SciKit-Learn and XGBoost classifiers ](#XGBoost)
 
 <a name="installation"></a>
 ## Installation
@@ -25,7 +25,7 @@ Note: while the code can be run locally, given GPU availability and requirements
 <a name="mu2e-calo"></a>
 ## The Mu2e experiment and its calorimeter 
 
-The [Mu2e experiment](https://arxiv.org/pdf/1901.11099.pdf) is being built at Fermilab and it will search for Charged Lepton Flavour Violation (CLFV) via the conversion process:  &mu;<sup>-</sup> +Al(27,13) &rarr; e<sup>-</sup> Al(27,13). Mu2e will to improve the current sensitivity on the ratio between the conversion and capture events rates by four orders of magnitude, reaching a sensitivity of 8x10<sup>-17</sup> at 90% CL. <br>
+The [Mu2e experiment](https://arxiv.org/pdf/1901.11099.pdf) is being built at Fermilab and it will search for Charged Lepton Flavour Violation (CLFV) via the conversion process:  &mu;<sup>-</sup> + Al(27,13) &rarr; e<sup>-</sup> + Al(27,13). Mu2e will to improve the current sensitivity on the ratio between the conversion and capture events rates by four orders of magnitude, reaching a sensitivity of 8x10<sup>-17</sup> at 90% CL. <br>
 A high intensity pulsed muon beam at 10 GHz is stopped on the Al target. The conversion signature is a 104.97 MeV electron. The Mu2e detectors are:
 1. A high momentum resolution 3 meter long Straw Tube Tracker, made of circa 2x10<sup>4</sup> straws arranged in 36 planes, suppresses the irreducible decay in orbit background. 
 2. A pure CsI Crystal Calorimeter complements the tracker information and provides excellent energy and time resolution. The Mu2e calorimeter is formed by two annular disks, each one containing 674 undoped CsI crystals (3.4x3.4x20 cm<sup>3</sup>). Each CsI crystal is readout by two UV-extended Hamamatsu Silicon Photomultipliers.
@@ -44,7 +44,7 @@ Radiative Muon Capture (RMC) occurs when a muon is absorbed in the target and a 
 Near the endpoint, RMC photons represent a background to other Mu2e CLFV searches like &mu;<sup>-</sup> &rarr; e<sup>+</sup>.
 The RMC spectrum has been measured by the TRUMPH collaboration, but high energy tails have low statistics and an independent measurement is required near the endpoint.
 <figure>
-    <img src="./images/rmc-truimph.png">
+    <img src="./images/rmc-truimph.png" width="350">
     <figcaption align="center">Fig. 2 The TRIUMPH RMC photon spectrum for the Mu2e target material (<sup>27</sup>Al).  </figcaption>
 </figure>
 
@@ -64,6 +64,11 @@ There are three types of samples:
 <li>Background: min-bias events due to the beam</li>
 <li>Background: cosmic rays </li>
 </ul>
+
+<figure>
+    <img src="./images/data-visualiz.png" width="550">
+    <figcaption align="center">Fig. 3 Example of 1 cluster for each of the three samples.  </figcaption>
+</figure>
 
 Each sample represents one cluster in the calorimeter and has information about the cluster and at hit-level: <br>
 <ul>
@@ -97,11 +102,40 @@ RUN:
 ```
 $ ipython3 PNet_RMC_main.ipynb
 ```
-[[Code]](https://github.com/elisasanzani/Software_and_Computing_Project/blob/main/PNet_RMC_main.ipynb)
+[[Colab notebook]](https://github.com/elisasanzani/Software_and_Computing_Project/blob/main/PNet_RMC_main.ipynb)
 
 
 <a name="performance"></a>
 ## Model performance
+Performance plots are shown in the [training notebook](https://github.com/elisasanzani/Software_and_Computing_Project/blob/main/PNet_RMC_main.ipynb) and saved in [images/images_PNet](https://github.com/elisasanzani/Software_and_Computing_Project/tree/main/images/images_PNet)
+The network works with a AUPRC greater than 97%.
+There are signs of overfitting before epoch 20 as can be seen from the train and validation loss curves.
+As can be seen from the energy histogram, the high energy end-point of the RMC spectrum is free from cosmic rays.<br>
+<figure>
+    <img src="./images/best-train.png" width="550">
+    <figcaption align="center">Fig. 4 Loss and AUPRC values with respect to the epoch (top) and the best PR curve obtained (bottom).  </figcaption>
+</figure>
 
 <a name="XGBoost"></a>
-## Other: XGBoost implementation 
+## Other: SciKit-Learn and XGBoost classifiers 
+Taking into consideration only min-bias background, different SciKit-Learn classifiers are trained:
+- [RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier)
+- [ExtraTreesClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html?highlight=extratreesclassifier#sklearn.ensemble.ExtraTreesClassifier)
+- [AdaBoostClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html#sklearn.ensemble.AdaBoostClassifier)
+- [HistGradientBoostingClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.HistGradientBoostingClassifier.html?highlight=histgradientboostingclassifier#sklearn.ensemble.HistGradientBoostingClassifier)
+- [DecisionTreeClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier)
+
+Also [XGBoost](https://xgboost.readthedocs.io/en/stable/python/python_intro.html) is implemented.
+XGBoost (Extreme Gradient Boosting) belongs to a family of boosting algorithms and uses the gradient boosting framework and it is widely diffused thanks to its performances and also in this application it has consistently performed well (AUPRC &sim;96%).
+<br>
+<br>The resulting precision-recall curves are in this repo in [images/images_Classifiers](https://github.com/elisasanzani/Software_and_Computing_Project/tree/main/images/images_Classifiers)
+
+
+RUN:
+```
+$ ipython3 XGBoost_RadiativeMuonCapture.ipynb
+```
+<br>Note: GPU is required. The program will stop if no GPU resources are found.
+
+
+[[Colab notebook]](https://github.com/elisasanzani/Software_and_Computing_Project/blob/main/XGBoost_RadiativeMuonCapture.ipynb)
