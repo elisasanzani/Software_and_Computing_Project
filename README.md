@@ -116,8 +116,10 @@ The network works with a AUPRC greater than 97%.
 There are signs of overfitting before epoch 20 as can be seen from the train and validation loss curves.
 As can be seen from the energy histogram, the high energy end-point of the RMC spectrum is free from cosmic rays.<br>
 <figure>
+    <p align="center">
     <img src="./images/best-train.png" width="550">
     <figcaption align="center">Fig. 4 Loss and AUPRC values with respect to the epoch (top) and the best PR curve obtained (bottom).  </figcaption>
+    </p>
 </figure>
 
 <a name="XGBoost"></a>
