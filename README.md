@@ -112,7 +112,7 @@ $ ipython3 PNet_RMC_main.ipynb
 <a name="performance"></a>
 ## Model performance
 Performance plots are shown in the [training notebook](https://github.com/elisasanzani/Software_and_Computing_Project/blob/main/PNet_RMC_main.ipynb) and saved in [images/images_PNet](https://github.com/elisasanzani/Software_and_Computing_Project/tree/main/images/images_PNet)
-The network works with a AUPRC greater than 97%.
+The network works with a AUPRC &sim;98%.
 There are signs of overfitting before epoch 20 as can be seen from the train and validation loss curves.
 As can be seen from the energy histogram, the high energy end-point of the RMC spectrum is free from cosmic rays.<br>
 <figure>
