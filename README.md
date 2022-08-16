@@ -70,7 +70,7 @@ There are three types of samples:
 <figure>
     <p align="center">
     <img src="./images/data-visualiz.png" width="600">
-    <figcaption align="center">Fig. 3 Example of 1 cluster for each of the three samples.  </figcaption>
+    <figcaption style="text-align:center">Fig. 3 Example of 1 cluster for each of the three samples.  </figcaption>
     </p>
 </figure>
 
