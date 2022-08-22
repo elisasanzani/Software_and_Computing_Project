@@ -43,7 +43,7 @@ A high intensity pulsed muon beam at 10 GHz is stopped on the Al target. The con
 ## Radiative Muon Capture
 Radiative Muon Capture (RMC) occurs when a muon is absorbed in the target and a photon is emitted: &mu;<sup>-</sup> +Al(27,13) &rarr; &gamma; + &nu;<sub>&mu;</sub> + Mg(27,12).<br>
 Near the endpoint, RMC photons represent a background to other Mu2e CLFV searches like &mu;<sup>-</sup> &rarr; e<sup>+</sup>.
-The RMC spectrum has been measured by the TRUMPH collaboration, but high energy tails have low statistics and an independent measurement is required near the endpoint.
+The [RMC spectrum](https://journals.aps.org/prc/abstract/10.1103/PhysRevC.46.1094) has been measured by the TRIUMPH collaboration, but high energy tails have low statistics and an independent measurement is required near the endpoint.
 <figure>
     <p align="center">
     <img src="./images/rmc-truimph.png" width="350">
@@ -144,7 +144,7 @@ RUN:
 ```
 $ ipython3 XGBoost_RadiativeMuonCapture.ipynb
 ```
-<br>Note: GPU is required for XGBoost. The program will stop if no GPU resources are found.
+<br>Note: GPU is required for XGBoost. The program will stop if no GPU resources are found. 
 
 
 [[Colab notebook]](https://github.com/elisasanzani/Software_and_Computing_Project/blob/main/XGBoost_RadiativeMuonCapture.ipynb)
