@@ -21,7 +21,7 @@ Repository with an adapted version of the ParticleNet DG-CNN used to identify si
     $ sudo pip3 install -r requirements.txt
 ```
 Note: while the code can be run locally, given GPU availability and requirements, I suggest using [Google Colaboratory](https://colab.research.google.com/) to have a fast performance ensured. <br>
-Files can be opened directly from GitHub or load the .ipynb file on Colab and select Runtime -> Change runtime -> Set harware acceleration to GPU. Data and the model are downloaded directly by the python scripts, but in a local run data can be fetched locally since it is available in this repository.
+Files can be opened directly from GitHub on Colab or load the .ipynb file on Colab and select Runtime -> Change runtime -> Set harware acceleration to GPU. Data and the model are downloaded directly by the python scripts, but in a local run data can be fetched locally since it is available in this repository.
 
 <a name="mu2e-calo"></a>
 ## The Mu2e experiment and its calorimeter 
@@ -108,6 +108,8 @@ RUN:
 ```
 $ ipython3 PNet_RMC_main.ipynb
 ```
+Note: Tensorflow can run on CPU, but performances will be affected and training could take a long time.
+
 [[Colab notebook]](https://github.com/elisasanzani/Software_and_Computing_Project/blob/main/PNet_RMC_main.ipynb)
 
 
